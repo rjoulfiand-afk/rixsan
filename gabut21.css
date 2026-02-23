@@ -1,0 +1,456 @@
+/* 1. VARIABEL & RESET */
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --gold: #c5a059;
+    --gold-bright: #d4b475;
+    --text-primary: #f8fafc;
+    --text-muted: #94a3b8;
+    --glow: rgba(197, 160, 89, 0.2);
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-dark);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+/* 2. BACKGROUND & LAYOUT */
+.glass-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+    z-index: -1;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 600px;
+}
+
+/* 3. HEADER */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.date-label {
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.brand-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.8rem, 5vw, 2.2rem);
+    background: linear-gradient(to bottom, #ffffff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* 4. KARTU UTAMA */
+.main-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 50px 30px;
+    border-radius: 40px;
+    position: relative;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    text-align: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-transition {
+    animation: fadeUp 0.5s ease-out;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.quote-mark {
+    position: absolute;
+    top: 10px; left: 25px;
+    font-family: 'Cinzel', serif;
+    font-size: 5rem;
+    color: var(--gold);
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+.verse-body {
+    font-family: 'Lora', serif;
+    font-size: clamp(1.1rem, 4vw, 1.4rem);
+    line-height: 1.7;
+    margin-bottom: 25px;
+    font-style: italic;
+    color: #e2e8f0;
+    min-height: 80px;
+}
+
+.verse-meta {
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.devotion-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    color: var(--gold);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 10px 22px;
+    border-radius: 50px;
+    background: rgba(197, 160, 89, 0.1);
+    transition: var(--transition);
+}
+
+.devotion-trigger:hover { 
+    background: rgba(197, 160, 89, 0.2);
+    transform: translateY(-2px); 
+}
+
+/* 5. KONTROL & TOMBOL */
+.control-center {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.btn-primary {
+    background: var(--gold);
+    color: #1e293b;
+    padding: 16px 50px;
+    border-radius: 100px;
+    border: none;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 10px 20px var(--glow);
+    transition: var(--transition);
+}
+
+.btn-primary:hover {
+    background: var(--gold-bright);
+    transform: translateY(-3px);
+}
+
+.secondary-actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.btn-circle {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.btn-circle:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+}
+
+#musicBtn.playing {
+    color: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 15px var(--glow);
+}
+
+/* 6. VISUALIZER */
+.visualizer-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 20px;
+    width: 25px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.visualizer-container.active { opacity: 1; }
+
+.bar {
+    width: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    height: 100%;
+    animation: bounce 0.5s ease-in-out infinite alternate;
+    animation-play-state: paused;
+}
+
+.bar:nth-child(1) { animation-duration: 0.4s; }
+.bar:nth-child(2) { animation-duration: 0.7s; }
+.bar:nth-child(3) { animation-duration: 0.5s; }
+.bar:nth-child(4) { animation-duration: 0.6s; }
+
+@keyframes bounce {
+    0% { height: 20%; }
+    100% { height: 100%; }
+}
+
+.visualizer-container.active .bar { animation-play-state: running; }
+
+/* 7. MODAL & TOAST */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(12px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: #1e293b;
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    padding: 35px;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    animation: modalIn 0.4s ease-out;
+}
+
+@keyframes modalIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px; top: 15px;
+    font-size: 28px;
+    color: var(--gold);
+    cursor: pointer;
+}
+
+.modal-title { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 10px; }
+.modal-divider { border: 0; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); margin: 20px 0; }
+.modal-text { font-family: 'Lora', serif; line-height: 1.8; color: #f1f5f9; font-style: italic; }
+
+#toast {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: #0f172a;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 700;
+    opacity: 0;
+    transition: 0.4s;
+    z-index: 3000;
+}
+
+
+@media (max-width: 480px) {
+    .main-card { padding: 40px 20px; }
+    .btn-primary { width: 100%; }
+}
+
+
+
+body {
+    overflow-x: hidden;
+    position: relative;
+    margin: 0;
+}
+
+
+@media (max-width: 480px) {
+    .cross-bg {
+        font-size: 30rem;
+        opacity: 0.04;
+    }
+}
+
+.side-decoration {
+    position: fixed;
+    top: 0;
+    width: 2px;
+    height: 100vh;
+    background: linear-gradient(
+        to bottom, 
+        transparent, 
+        var(--gold), 
+        transparent
+    );
+    opacity: 0.15;
+    z-index: -1;
+}
+
+.side-decoration.left { left: 5%; }
+.side-decoration.right { right: 5%; }
+
+
+.side-decoration::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: var(--gold);
+    filter: blur(40px);
+    border-radius: 50%;
+    opacity: 0.5;
+}
+
+
+@media (max-width: 768px) {
+    .side-decoration {
+        opacity: 0.05;
+    }
+    .side-decoration.left { left: 2%; }
+    .side-decoration.right { right: 2%; }
+}
+.logo-ornament {
+    position: fixed;
+    top: 40px;      
+    left: 100px;     
+    width: 260px;   
+    height: 130px;
+    background-image: url('RVVEFORWARD.png'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left center;
+    opacity: 0.6;   
+    z-index: 5;     
+    pointer-events: none;
+    
+    filter: brightness(0) invert(1); 
+}
+
+
+.cross-bg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: min(45rem, 100vw); 
+    color: #ffffff;
+    opacity: 0.03; 
+    pointer-events: none;
+    z-index: -2;    /* Paling belakang sendiri */
+    font-family: 'Cinzel', serif;
+    filter: blur(5px);
+    user-select: none;
+}
+
+/* --- GARIS SAMPING ELEGAN --- */
+.side-decoration {
+    position: fixed;
+    top: 0;
+    width: 1px;
+    height: 100vh;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    opacity: 0.15;
+    z-index: -1;
+}
+.side-decoration.left { left: 4%; }
+.side-decoration.right { right: 4%; }
+
+/* Tambahan: Pastikan kartu utama tetap terlihat jelas */
+.main-card {
+    z-index: 10; /* Pastikan kartu di depan ornamen */
+    /* ... sisa kode kartu tetap sama ... */
+}
+.cross-bg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: min(50rem, 150vw); 
+    color: #ffffff;
+    opacity: 0.07; 
+    pointer-events: none;
+    z-index: 0; 
+    font-family: 'Cinzel', serif;
+    filter: blur(8px);
+    user-select: none;
+}
+/* --- Style Kategori --- */
+/* Styling Pilihan Kategori */
+.category-filter {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.category-filter select {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    outline: none;
+}
+
+/* Tombol Floating Theme Toggle */
+.theme-toggle {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* --- TEMA SIANG (LIGHT MODE) --- */
+body.light-mode {
+    --bg-dark: #f1f5f9;
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --text-primary: #1e293b;
+    --text-muted: #64748b;
+}
+
+body.light-mode .glass-bg {
+    background: radial-gradient(circle at 50% 50%, #e2e8f0 0%, #f8fafc 100%);
+}
+
+body.light-mode .verse-body { color: #334155; }
+body.light-mode .cross-bg { color: #000000; opacity: 0.03; }
+body.light-mode .logo-ornament { filter: brightness(0); opacity: 0.4; }

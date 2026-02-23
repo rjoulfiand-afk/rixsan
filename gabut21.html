@@ -1,0 +1,112 @@
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Living Word</title>
+        <link rel="stylesheet" href="gabut21.css">
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="cross-bg">†</div>
+        <div class="logo-ornament"></div>
+        <div class="glass-bg"></div>
+        
+        <div class="line-art-top-left">
+        <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <filter id="softGlow">
+                    <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+            <path class="main-path" 
+                d="M10,60 H30 M15,45 L25,60 L15,75 M25,45 L35,60 L25,75 
+                M50,60 L65,90 L85,30 L105,90 L120,60 
+                H145 M145,20 V100 M125,45 H165 
+                M175,60 L195,90 L215,30 L235,90 L255,60 H280" 
+                stroke="white" 
+                stroke-width="2.5" 
+                fill="none" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"
+                filter="url(#softGlow)"/>
+        </svg>
+    </div>
+
+        <div class="side-decoration left"></div>
+        <div class="side-decoration right"></div>
+
+        <main class="app-container">
+            <header>
+                <p id="currentDate" class="date-label"></p>
+                <h1 class="brand-title">Living Word</h1>
+                <div class="category-filter">
+    <select id="categorySelect" onchange="generateVerse()">
+        <option value="all">Semua Perasaan</option>
+        <option value="strength">Butuh Kekuatan</option>
+        <option value="peace">Butuh Ketenangan</option>
+        <option value="thanks">Bersyukur</option>
+        <option value="love">Kasih & Harapan</option>
+    </select>
+</div>
+
+<button class="theme-toggle" onclick="toggleTheme()" title="Ganti Mode">
+    <span id="themeIcon">☀️</span>
+</button>   
+            </header>
+            
+
+            <section class="card-section">
+                <div class="main-card" id="mainCard">
+                    <div class="quote-mark">“</div>
+                    <div class="text-wrapper">
+                        <p id="verseText" class="verse-body">Memuat pesan...</p>
+                        <p id="verseRef" class="verse-meta"></p>
+                    </div>
+                    
+                    <div class="devotion-trigger" onclick="showDevotion()">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                        <span>Lihat Renungan</span>
+                    </div>
+                </div>
+
+                <div class="control-center">
+                    <button class="btn-primary" onclick="generateVerse()">Ayat Baru</button>
+                    <div class="secondary-actions">
+                        <button class="btn-circle" onclick="shareWA()" title="Bagikan ke WA">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.15.823-.298.045-.684.07-1.53-.284-1.298-.54-2.118-1.589-2.27-1.771-.126-.153-1.033-1.383-1.033-2.636 0-1.253.648-1.868.879-2.114.23-.244.5-.306.666-.306.166 0 .332.001.477.007.149.006.35-.056.548.423.2.484.684 1.666.744 1.786.06.12.1.259.02.422-.08.163-.12.264-.24.404-.12.14-.251.312-.359.419-.119.117-.243.245-.104.484.139.239.619.1.02 1.014 1.282.894 1.144 1.464 2.141 1.83 2.5 1.002.366 1.002.61.12.14-.24.312-.58.424-.725z"/></svg>
+                        </button>
+                        <button class="btn-circle" onclick="copyVerse()" title="Salin Ayat">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                        </button>
+                        <button class="btn-circle" id="musicBtn" onclick="toggleMusic()" title="Putar Musik">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                        </button>
+                        <div class="visualizer-container" id="visualizer">
+                            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="devotionModal" class="modal-overlay">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeDevotion()">&times;</span>
+                <h3 class="modal-title">Renungan & Kisah</h3>
+                <hr class="modal-divider">
+                <p id="devotionText" class="modal-text"></p>
+            </div>
+        </div>
+
+        <div id="toast">Berhasil disalin!</div>
+        <audio id="bgMusic" loop><source src="worship.mp3" type="audio/mpeg"></audio>
+        <script src="gabut21.js"></script>
+    </body>
+    </html>
